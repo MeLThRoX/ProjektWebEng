@@ -9,17 +9,34 @@ export class Signup extends Component {
         confirmpassword: ""
     }
 
-    componentDidMount() {
-        M.AutoInit();
-    }
-
     submit() {
         if (this.state.email && this.state.username && this.state.password && this.state.confirmpassword) {
             if (this.state.password !== this.state.confirmpassword) {
                 M.toast({ html: 'Passwords does not match!' });
                 return;
             } else {
-                
+                fetch('/api/users/create', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: this.state.username,
+                        email: this.state.email,
+                        password: this.state.password
+                    })
+                }).then(res => {
+                    if (res.ok) {
+                        res.json().then(res => {
+                            M.toast({ html: 'Account Created!' });
+                        })
+                    } else {
+                        res.json().then(res => {
+                            M.toast({ html: res.msg });
+                        })
+                    }
+                })
             }
         } else {
             M.toast({ html: 'Please fill all fields!' });
@@ -46,7 +63,7 @@ export class Signup extends Component {
                     <input id="confirmpassword" type="password" onChange={e => this.setState({ confirmpassword: e.target.value })} />
                     <label htmlFor="confirmpassword" style={{ left: "0" }}>Confirm Password</label>
                 </div>
-                <button className="btn waves-effect waves-light" type="submit" onClick={() => { this.submit()}}>
+                <button className="btn waves-effect waves-light" type="submit" onClick={() => { this.submit() }}>
                     Sign Up<i className="material-icons right">send</i>
                 </button>
                 <a href="/login" style={{ float: "right" }}>Login</a>

@@ -1,0 +1,19 @@
+html {
+    background: #1c1c1c;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+a,input:not(#search) {
+    color: white !important;
+}
+
+nav {
+    background: #161616;
+    background-color: #161616;
+}
+
+.sidenav {
+    background: #161616;
+    background-color: #161616;
+}

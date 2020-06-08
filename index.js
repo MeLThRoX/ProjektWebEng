@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 app.use('/api/users', require('./routes/api/users'))
+app.use('/api/movies', require('./routes/api/movies'))
 
 mongoose.connect('mongodb://root:root@localhost:27017/project?authSource=admin', {
     useNewUrlParser: true,
