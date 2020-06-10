@@ -2,8 +2,20 @@ import React, { Component } from 'react'
 import M from 'materialize-css';
 
 export class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: ""
+        }
+    }
+
     componentDidMount() {
         M.AutoInit();
+    }
+
+    submitSearch = (e) => {
+        e.preventDefault();
+        window.location = '/search/' + this.state.search;
     }
 
     render() {
@@ -19,15 +31,18 @@ export class Navbar extends Component {
                         <a href="/home" className="brand-logo center">WhatsNext</a>
                         <ul className="right hide-on-med-and-down">
                             {/* eslint-disable-next-line */}
-                            <li><a href="/login" style={{ display: "block" }}><i className="fas fa-user"></i></a></li>
+                            <li>
+                                {}
+                                <a href="/login" style={{ display: "block" }}><i className="fas fa-user"></i></a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
                 <nav style={{ borderRadius: "0 0 30px 30px", boxShadow: "0 2px 2px -2px rgba(0,0,0,0.14), 0 3px 1px -1px rgba(0,0,0,0.12), 0 1px 5px -5px rgba(0,0,0,0.2)" }}>
                     <div className="nav-wrapper">
-                        <form>
+                        <form onSubmit={this.submitSearch}>
                             <div className="input-field">
-                                <input id="search" type="search" required></input>
+                                <input id="search" type="search" onChange={e => { this.setState({ search: e.target.value }) }} required></input>
                                 <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                 <i className="material-icons">close</i>
                             </div>
@@ -38,18 +53,12 @@ export class Navbar extends Component {
                 <ul id="slide-out" className="sidenav">
                     <li><a href="/home">Home</a></li>
                     <li><a href="/watchlist">Watchlist</a></li>
+                    <li><a href="/seen">Seen</a></li>
 
                     <li><div className="divider"></div></li>
                     {/* eslint-disable-next-line */}
-                    <li><a href="#" className="subheader">Movies</a></li>
                     <li><a href="/movies/popular">Popular</a></li>
                     <li><a href="/movies/top_rated">Top Rated</a></li>
-
-                    <li><div className="divider"></div></li>
-                    {/* eslint-disable-next-line */}
-                    <li><a href="#" className="subheader">TV-Shows</a></li>
-                    <li><a href="/tv/popular">Popular</a></li>
-                    <li><a href="/tv/top_rated">Top Rated</a></li>
                 </ul>
             </div>
         )

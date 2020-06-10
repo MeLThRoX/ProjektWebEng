@@ -2,16 +2,17 @@ import React, { Component } from 'react'
 import WatchlistToggle from '../../Btns/WatchlistToggle'
 import SeenToggle from '../../Btns/SeenToggle'
 
-export class TopRated extends Component {
-    constructor() {
-        super()
+export class Search extends Component {
+    constructor(props) {
+        super(props);
+        this.query = props.match.params.query;
         this.state = {
             movies: [],
         }
     }
 
     componentWillMount() {
-        fetch('/api/movies/tmdb/movie/top_rated').then(res => res.json()).then(res => {
+        fetch('/api/movies/tmdb/search/' + this.query).then(res => res.json()).then(res => {
             this.setState({ movies: res.results })
         })
     }
@@ -20,7 +21,7 @@ export class TopRated extends Component {
         return (
             <div>
                 {this.state.movies.map(movie => (
-                    <div className="row z-depth-2" style={{ width: "100%", borderRadius: "15px", padding: "10px" }}>
+                    <div key={`/movie/${movie.id}`} className="row z-depth-2" style={{ width: "100%", borderRadius: "15px", padding: "10px" }}>
                         <div className="col s3">
                             <a href={`/movie/${movie.id}`}>
                                 <img alt={`movie_${movie.id}`} src={`https://image.tmdb.org/t/p/w1280/${movie.poster_path}`} style={{ width: "100%", borderRadius: "10px" }}></img>
@@ -39,4 +40,4 @@ export class TopRated extends Component {
     }
 }
 
-export default TopRated
+export default Search

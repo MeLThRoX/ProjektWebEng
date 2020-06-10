@@ -8,6 +8,9 @@ import Home from './Pages/Home.js'
 import Movie from './Pages/Movie.js'
 import Popular from './Pages/Movies/Popular.js';
 import TopRated from './Pages/Movies/TopRated.js';
+import Watchlist from './Pages/Watchlist'
+import Seen from './Pages/Seen'
+import Search from './Pages/Movies/Search'
 
 import './App.css'
 
@@ -29,6 +32,9 @@ function App() {
           <Route path="/movie/:id" component={Movie} />
           <Route path="/movies/popular" component={Popular} />
           <Route path="/movies/top_rated" component={TopRated} />
+          <Route path="/watchlist" component={Watchlist} />
+          <Route path="/seen" component={Seen} />
+          <Route path="/search/:query" component={Search} />
         </Router>
       </div>
     </div>

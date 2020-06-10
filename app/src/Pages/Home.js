@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Cookies } from 'react-cookie'
 
 import MovieMedia from './MovieMedia.js'
 import './Home.css'
@@ -9,8 +10,8 @@ export class Home extends Component {
         this.state = {
             movies_popular: [],
             movies_top_rated: [],
-            tv_popular: [],
-            tv_top_rated: []
+            watchlist: [],
+            seen: []
         }
     }
 
@@ -23,12 +24,21 @@ export class Home extends Component {
             this.setState({ movies_top_rated: res.results })
         })
 
-        fetch('/api/movies/tmdb/tv/popular').then(res => res.json()).then(res => {
-            this.setState({ tv_popular: res.results })
+        fetch('/api/watchlist/resolve', { headers: { "x-auth-token": (new Cookies('Authorization').get('Authorization', { path: '/' })) } }).then(res => {
+            if (res.ok) {
+                res.json().then(res => {
+                    console.log(res)
+                    this.setState({ watchlist: res })
+                })
+            }
         })
 
-        fetch('/api/movies/tmdb/tv/top_rated').then(res => res.json()).then(res => {
-            this.setState({ tv_top_rated: res.results })
+        fetch('/api/seen/resolve', { headers: { "x-auth-token": (new Cookies('Authorization').get('Authorization', { path: '/' })) } }).then(res => {
+            if (res.ok) {
+                res.json().then(res => {
+                    this.setState({ seen: res })
+                })
+            }
         })
     }
 
@@ -58,9 +68,9 @@ export class Home extends Component {
                 </div>
 
                 <div className="z-depth-2" style={{ width: "100%", height: "300px", borderRadius: "15px", padding: "10px", marginBottom: "20px" }}>
-                    <a href="/tv/popular"><h4 style={{ marginTop: 0 }}>Popular TV-Shows</h4></a>
+                    <a href="/watchlist"><h4 style={{ marginTop: 0 }}>Watchlist</h4></a>
                     <ul style={{ height: "80%", display: "flex", flexDirection: "row", overflowX: "auto", overflowY: "hidden" }}>
-                        {(this.state.tv_popular) ? this.state.tv_popular.map(movie => (
+                        {(this.state.watchlist) ? this.state.watchlist.map(movie => (
                             <li key={`movie_${movie.id}`} style={{ height: "100%", flex: "0 0 auto", margin: "0 5px 0 5px" }}>
                                 <MovieMedia height="100%" img={`https://image.tmdb.org/t/p/w1280/${movie.poster_path}`} id={movie.id} />
                             </li>
@@ -69,9 +79,9 @@ export class Home extends Component {
                 </div>
 
                 <div className="z-depth-2" style={{ width: "100%", height: "300px", borderRadius: "15px", padding: "10px", marginBottom: "20px" }}>
-                    <a href="/tv/top_rated"><h4 style={{ marginTop: 0 }}>Top Rated TV-Shows</h4></a>
+                    <a href="/seen"><h4 style={{ marginTop: 0 }}>Seen Movies</h4></a>
                     <ul style={{ height: "80%", display: "flex", flexDirection: "row", overflowX: "auto", overflowY: "hidden" }}>
-                        {(this.state.tv_top_rated) ? this.state.tv_top_rated.map(movie => (
+                        {(this.state.seen) ? this.state.seen.map(movie => (
                             <li key={`movie_${movie.id}`} style={{ height: "100%", flex: "0 0 auto", margin: "0 5px 0 5px" }}>
                                 <MovieMedia height="100%" img={`https://image.tmdb.org/t/p/w1280/${movie.poster_path}`} id={movie.id} />
                             </li>

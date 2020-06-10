@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import WatchlistToggle from '../../Btns/WatchlistToggle'
-import SeenToggle from '../../Btns/SeenToggle'
+import { Cookies } from 'react-cookie'
+import WatchlistToggle from '../Btns/WatchlistToggle'
+import SeenToggle from '../Btns/SeenToggle'
 
-export class TopRated extends Component {
+export class Popular extends Component {
     constructor() {
         super()
         this.state = {
@@ -11,8 +12,10 @@ export class TopRated extends Component {
     }
 
     componentWillMount() {
-        fetch('/api/movies/tmdb/movie/top_rated').then(res => res.json()).then(res => {
-            this.setState({ movies: res.results })
+        fetch('/api/seen/resolve', { headers: { "x-auth-token": (new Cookies('Authorization').get('Authorization', { path: '/' })) } }).then(res => {
+            if (res.ok) res.json().then(res => {
+                this.setState({ movies: res })
+            })
         })
     }
 
@@ -20,7 +23,7 @@ export class TopRated extends Component {
         return (
             <div>
                 {this.state.movies.map(movie => (
-                    <div className="row z-depth-2" style={{ width: "100%", borderRadius: "15px", padding: "10px" }}>
+                    <div key={`/movie/${movie.id}`} className="row z-depth-2" style={{ width: "100%", borderRadius: "15px", padding: "10px" }}>
                         <div className="col s3">
                             <a href={`/movie/${movie.id}`}>
                                 <img alt={`movie_${movie.id}`} src={`https://image.tmdb.org/t/p/w1280/${movie.poster_path}`} style={{ width: "100%", borderRadius: "10px" }}></img>
@@ -39,4 +42,4 @@ export class TopRated extends Component {
     }
 }
 
-export default TopRated
+export default Popular

@@ -9,6 +9,8 @@ app.use(express.json());
 
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/movies', require('./routes/api/movies'))
+app.use('/api/watchlist', require('./routes/api/watchlist'))
+app.use('/api/seen', require('./routes/api/seen'))
 
 mongoose.connect('mongodb://root:root@localhost:27017/project?authSource=admin', {
     useNewUrlParser: true,

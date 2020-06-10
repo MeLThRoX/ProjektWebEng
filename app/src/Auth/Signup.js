@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import M from 'materialize-css';
+import { Cookies } from 'react-cookie'
 
 export class Signup extends Component {
     state = {
@@ -29,6 +30,7 @@ export class Signup extends Component {
                 }).then(res => {
                     if (res.ok) {
                         res.json().then(res => {
+                            (new Cookies('Authorization')).set('Authorization', res.token, { path: '/' })
                             M.toast({ html: 'Account Created!' });
                         })
                     } else {

@@ -27,6 +27,12 @@ router.get('/tmdb/tv/top_rated', (req, res) => {
     })
 })
 
+router.get('/tmdb/search/:query', (req, res) => {
+    fetch('https://api.themoviedb.org/3/search/movie?api_key=776c3b984bf13b25620cc6c2e64c26aa&query=' + req.params.query).then(resp => resp.json()).then(tmdb_res => {
+        res.send(tmdb_res)
+    })
+})
+
 router.get('/tmdb/movie/:id', (req, res) => {
     tmdb.movie.info(req.params.id, (err, tmbd_res) => {
         if (err) {

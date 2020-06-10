@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import WatchlistToggle from '../../Btns/WatchlistToggle'
+import SeenToggle from '../../Btns/SeenToggle'
 
 export class Popular extends Component {
     constructor() {
@@ -27,6 +29,8 @@ export class Popular extends Component {
                         <div className="col s9">
                             <a href={`/movie/${movie.id}`} style={{ color: "black" }}><h5><strong>{movie.title}</strong> ({movie.release_date.split('-')[0]})</h5></a>
                             <p>{movie.overview}</p>
+                            <WatchlistToggle movieId={movie.id}></WatchlistToggle>
+                            <SeenToggle movieId={movie.id}></SeenToggle>
                         </div>
                     </div>
                 ))}

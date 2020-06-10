@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import M from 'materialize-css';
+import { Cookies } from 'react-cookie'
 
 export class Login extends Component {
     state = {
@@ -11,6 +12,28 @@ export class Login extends Component {
         if (!this.state.username || !this.state.password) {
             M.toast({ html: 'Please fill all fields!' });
             return;
+        } else {
+            fetch('/api/users/auth', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    password: this.state.password
+                })
+            }).then(res => {
+                if (res.ok) {
+                    res.json().then(res => {
+                        (new Cookies('Authorization')).set('Authorization', res.token, { path: '/' })
+                    })
+                    M.toast({ html: 'Login successful' })
+                }
+                else res.json().then(res => {
+                    M.toast({ html: res.msg })
+                })
+            })
         }
     }
 
